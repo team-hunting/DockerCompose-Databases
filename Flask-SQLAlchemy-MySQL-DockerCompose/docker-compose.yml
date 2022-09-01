@@ -1,0 +1,36 @@
+version: '3.9'
+services:
+  webserver:
+    build:
+      context: .
+    container_name: take_home
+    image: python:3.9.2
+    ports:
+      - 5000:5000
+
+    # Need to wait for db to spin up  
+    depends_on:
+      db:
+        condition: service_healthy
+      
+  db:
+    image: mysql:5.7 # 5.7 due to caching_sha2_password error in latest
+    container_name: flask-backend-db
+    ports:
+      - 3306:3306
+    volumes:
+      - mysql:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_PASSWORD=password
+      - MYSQL_USER=user
+      - MYSQL_DATABASE=mydb
+
+    # Need healthcheck or else flask will try to hit the database before it's ready
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+
+volumes:
+  mysql:

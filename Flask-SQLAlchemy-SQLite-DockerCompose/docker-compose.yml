@@ -1,0 +1,14 @@
+version: '3.5'
+services:
+  webserver:
+    build:
+      context: .
+    container_name: take_home
+    image: python:3.9.2
+    ports:
+      - 5000:5000  
+    volumes:
+      - db_volume:/db_volume
+
+volumes:
+  db_volume:
