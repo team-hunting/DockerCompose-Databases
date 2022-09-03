@@ -5,6 +5,4 @@ These projects involve using docker-compose to spin up database containers, and 
 Other projects here spin up a flask API in one container which can interact with the database in the other container.
 
 ## TODO:
-Add Directus
-
 Add Supabase
